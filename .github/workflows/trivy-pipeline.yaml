@@ -1,0 +1,51 @@
+name: CI Pipeline Trivy
+
+on:
+  push:
+    branches:
+      - trivy
+
+jobs:
+
+  # ===============================
+  # JOB 1 - BUILD
+  # ===============================
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build project
+        run: echo "Static HTML project - nothing to build"
+
+  # ===============================
+  # JOB 2 - SCAN TRIVY
+  # ===============================
+  scan-trivy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: table
+          severity: CRITICAL,HIGH
+
+  # ===============================
+  # JOB 3 - DEPLOY
+  # ===============================
+  deploy:
+    needs: scan-trivy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy project
+        run: echo "Deploy simulation"
