@@ -1,0 +1,32 @@
+name: CI Pipeline Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  # ===============================
+  # JOB 1 - BUILD
+  # ===============================
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build project
+        run: echo "Static HTML project - nothing to build"
+
+  # ===============================
+  # JOB 2 - DEPLOY
+  # ===============================
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy project
+        run: echo "Deploy simulation"
